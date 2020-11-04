@@ -9,34 +9,23 @@ data "aws_ami" "ami" {
   }
 }
 
-resource "aws_security_group" "allow_all_out" {
-  name        = "allow all out"
-  description = "Allow all outbound traffic"
-
-  egress {
-    from_port   = 0
-    to_port     = 0
-    protocol    = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = merge(var.tags, {
-    name = "${var.tags.project}-sg"
-  })
-}
-
 resource "aws_instance" "discord_bot" {
   ami           = data.aws_ami.ami.id
   instance_type = "t2.micro"
-  security_groups = [aws_security_group.allow_all_out.name]
-  user_data_base64 = filebase64("../bot/entrypoint.sh")
+  user_data = <<EOF
+#!/usr/bin/bash
+sudo apt-get update -y
+sudo apt-get install python3-pip -y
+git clone https://github.com/phvv-me/lincoln.git
+export DISCORD_TOKEN=${var.DISCORD_TOKEN}
+python3 -m pip install -r lincoln/requirements.txt
+python3 lincoln/bot/main.py
+EOF
 
   tags = merge(var.tags, {
     name = "${var.tags.project}-ec2-instance"
   })
 
-  provisioner "file" {
-    source      = "../.env"
-    destination = "lincoln/.env"
-  }
 }
+
+variable "DISCORD_TOKEN" {}
