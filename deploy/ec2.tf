@@ -16,6 +16,7 @@ resource "aws_instance" "discord_bot" {
 #!/usr/bin/bash
 sudo apt-get update -y
 sudo apt-get install python3-pip -y
+
 git clone https://github.com/phvv-me/lincoln.git
 
 export DISCORD_TOKEN=${var.DISCORD_TOKEN}
@@ -30,7 +31,6 @@ EOF
   tags = merge(var.tags, {
     name = "${var.tags.project}-ec2-instance"
   })
-
 }
 
 variable "DISCORD_TOKEN" {}

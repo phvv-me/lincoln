@@ -5,6 +5,14 @@ terraform {
       source = "hashicorp/aws"
     }
   }
+  backend "remote" {
+    organization = "phvv"
+
+    workspaces {
+      // from terraform cloud
+      name = "lincoln"
+    }
+  }
 }
 
 provider "aws" {
