@@ -1,5 +1,6 @@
 import boto3
 import discord
+from decouple import config
 from discord.ext import commands
 
 bot = commands.Bot(command_prefix="!")
@@ -49,4 +50,5 @@ async def show_all_watch_entries(ctx):
 
 
 if __name__ == '__main__':
-    bot.run("MY_TOKEN")
+    TOKEN = config("DISCORD_TOKEN")
+    bot.run(TOKEN)
