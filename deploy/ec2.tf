@@ -17,7 +17,12 @@ resource "aws_instance" "discord_bot" {
 sudo apt-get update -y
 sudo apt-get install python3-pip -y
 git clone https://github.com/phvv-me/lincoln.git
+
 export DISCORD_TOKEN=${var.DISCORD_TOKEN}
+export AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY_ID}
+export AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_ACCESS_KEY}
+export AWS_DEFAULT_REGION=us-east-1
+
 python3 -m pip install -r lincoln/requirements.txt
 python3 lincoln/bot/main.py
 EOF
@@ -29,3 +34,5 @@ EOF
 }
 
 variable "DISCORD_TOKEN" {}
+variable "AWS_ACCESS_KEY_ID" {}
+variable "AWS_SECRET_ACCESS_KEY" {}

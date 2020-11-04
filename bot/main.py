@@ -5,7 +5,7 @@ from discord.ext import commands
 
 bot = commands.Bot(command_prefix="!")
 
-dynamodb = boto3.resource('dynamodb', region_name="us-east-1")
+dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('bot')
 
 
