@@ -13,6 +13,6 @@ resource "aws_dynamodb_table" "input_dynamodb_table" {
   }
 
   tags = merge(var.tags, {
-    name = "${var.tags.project}-dynamodb-table"
+    name = "bot-dynamodb-table"
   })
 }

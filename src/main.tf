@@ -23,10 +23,24 @@ provider "aws" {
   version = "~> 3.6.0"
 }
 
-variable "tags" {
-  type = map(string)
-  default = {
-    "project" = "lincoln"
-    "owner"   = "pedro valois"
-  }
+module "bot" {
+  source = "./services/bot/deploy"
+
+  DISCORD_TOKEN = var.DISCORD_TOKEN
+  AWS_ACCESS_KEY_ID = var.AWS_ACCESS_KEY_ID
+  AWS_SECRET_ACCESS_KEY = var.AWS_SECRET_ACCESS_KEY
+
+  tags = var.tags
 }
+
+module "backend" {
+  source = "./services/backend/deploy"
+
+  is_trigger_enabled = true
+
+  DISCORD_WEBHOOK_URL = var.DISCORD_WEBHOOK_URL
+
+  tags = var.tags
+}
+
+

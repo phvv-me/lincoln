@@ -29,10 +29,6 @@ python3 lincoln/bot/main.py
 EOF
 
   tags = merge(var.tags, {
-    name = "${var.tags.project}-ec2-instance"
+    name = "bot-ec2-instance"
   })
 }
-
-variable "DISCORD_TOKEN" {}
-variable "AWS_ACCESS_KEY_ID" {}
-variable "AWS_SECRET_ACCESS_KEY" {}

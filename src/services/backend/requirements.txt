@@ -1,8 +1,6 @@
 boto3
-
 python-decouple
 pandas_datareader
-
+requests
 ta
-
 yfinance

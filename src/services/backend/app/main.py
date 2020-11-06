@@ -16,7 +16,7 @@ def handler(event, context):
     data = dynamodb.Table('bot').scan(Limit=1000)
     all_symbols = [item["symbol"] for item in data["Items"]]
 
-    df = pdr.get_data_yahoo(" ".join(all_symbols), period="1d", interval="30m")
+    df = pdr.get_data_yahoo(" ".join(all_symbols), period="5d", interval="30m")
 
     for symbol, close in df["Close"].iteritems():
         rsi = RSIIndicator(close, n=14).rsi()
@@ -31,5 +31,3 @@ def handler(event, context):
 
         # notify in discord with webhook
         requests.post(DISCORD_WEBHOOK_URL, json={"content": f"time to {action} {symbol}", "tts": False})
-
-    return True

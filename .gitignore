@@ -131,3 +131,7 @@ dmypy.json
 # Terraform
 .terraform
 .terraform/
+
+# extra
+lambda_layer
+lambda_layer/
