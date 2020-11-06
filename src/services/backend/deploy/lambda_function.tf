@@ -11,9 +11,7 @@ variable service {
 data "archive_file" "service_zip_package" {
   type        = "zip"
   source_dir  = "${path.module}/../app"
-
-  # forces file update and not just etag update
-  output_path = "${timestamp()}-${var.service.filename}"
+  output_path = var.service.filename
 }
 
 resource "aws_s3_bucket_object" "service_package_s3_object" {

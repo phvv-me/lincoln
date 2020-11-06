@@ -13,9 +13,7 @@ locals {
 data "archive_file" "requirements_zip_package" {
   type = "zip"
   source_dir = local.source_dir
-
-  # forces file update and not just etag update
-  output_path = "${timestamp()}-${local.filename}"
+  output_path = local.filename
 }
 
 resource "aws_s3_bucket_object" "layer_package_s3_object" {
