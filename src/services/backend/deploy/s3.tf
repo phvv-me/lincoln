@@ -1,6 +1,6 @@
 resource "aws_s3_bucket" "static_files" {
   bucket = "backend-static-files"
-  acl    = "private"
+  acl = "private"
 
   server_side_encryption_configuration {
     rule {

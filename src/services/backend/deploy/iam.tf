@@ -22,8 +22,8 @@ data "aws_iam_policy_document" "lambda_assume_role_policy" {
 }
 
 resource "aws_iam_role" "lambda_role" {
-  name               = "backend-lambda-role"
-  path               = "/system/"
+  name = "backend-lambda-role"
+  path = "/system/"
   assume_role_policy = data.aws_iam_policy_document.lambda_assume_role_policy.json
 
   lifecycle {
@@ -43,26 +43,28 @@ data "aws_iam_policy_document" "lambda_execution_policy_document" {
       "logs:CreateLogGroup",
       "logs:PutLogEvents"
     ]
-    resources = ["arn:aws:logs:*:*:*"]
+    resources = [
+      "arn:aws:logs:*:*:*"]
   }
   // DynamoDB Scan
   statement {
     actions = [
       "dynamodb:Scan"
     ]
-    resources = ["arn:aws:dynamodb:*:*:*"]
+    resources = [
+      "arn:aws:dynamodb:*:*:*"]
   }
 }
 
 resource "aws_iam_policy" "lambda_execution_policy" {
-  name        = "backend-lambda-execution-policy"
-  path        = "/"
+  name = "backend-lambda-execution-policy"
+  path = "/"
   description = "IAM policy for backend lambda function"
-  policy      = data.aws_iam_policy_document.lambda_execution_policy_document.json
+  policy = data.aws_iam_policy_document.lambda_execution_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "lambda_policy" {
-  role       = aws_iam_role.lambda_role.name
+  role = aws_iam_role.lambda_role.name
   policy_arn = aws_iam_policy.lambda_execution_policy.arn
 }
 
@@ -78,7 +80,8 @@ data "aws_iam_policy_document" "s3_bucket_policy_document" {
     actions = [
       "s3:*"
     ]
-    resources = ["arn:aws:s3:::${aws_s3_bucket.static_files.bucket}/*"]
+    resources = [
+      "arn:aws:s3:::${aws_s3_bucket.static_files.bucket}/*"]
 
     # anonymous user
     principals {

@@ -49,6 +49,9 @@ async def show_all_watch_entries(ctx):
     await ctx.send(embed=embed)
 
 
+
+
+
 if __name__ == '__main__':
     TOKEN = config("DISCORD_TOKEN")
     bot.run(TOKEN)

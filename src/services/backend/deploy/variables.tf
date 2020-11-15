@@ -1,4 +1,3 @@
-
 variable "tags" {}
 
 variable "is_trigger_enabled" {

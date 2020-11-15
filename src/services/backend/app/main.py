@@ -1,33 +1,58 @@
-import boto3
-import requests
-import yfinance
-from decouple import config
-from ta.momentum import RSIIndicator
-from pandas_datareader import data as pdr
+import importlib
+import logging
 
-DISCORD_WEBHOOK_URL = config("DISCORD_WEBHOOK_URL")
+# Set up logging
+logging.basicConfig()
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
-yfinance.pdr_override()
 
-dynamodb = boto3.resource('dynamodb')
+class LambdaHandler:
+
+    @staticmethod
+    def import_module_and_get_function(whole_function):
+        """
+        Given a modular path to a function, import that module
+        and return the function.
+        """
+        module, function = whole_function.rsplit('.', 1)
+        app_module = importlib.import_module(module)
+        app_function = getattr(app_module, function)
+
+        logger.debug(f"function {app_function} from module {app_module} was imported")
+        return app_function
+
+    @classmethod
+    def lambda_handler(cls, event, context):
+        try:
+            return cls().handler(event, context)
+        except Exception:
+            logger.exception(msg='Failed to process exception via custom handler.')
+            raise
+
+    def handler(self, event, context):
+        result = None
+
+        # This is the result of Cloudwatch scheduled event.
+        if event.get('detail-type') == 'Scheduled Event':
+
+            whole_function = event['resources'][0].split('/')[-1].split('-')[-1]
+
+            # This is a scheduled function.
+            if '.' in whole_function:
+                app_function = self.import_module_and_get_function(whole_function)
+
+                # Execute the function!
+                result = app_function(event, context)
+                logger.debug(f"{app_function} called for event {event}")
+
+        # This is a direct invocation.
+        else:
+            pass
+
+        logger.debug(f"returned {result} for event {event}")
+        return result
 
 
 def handler(event, context):
-    data = dynamodb.Table('bot').scan(Limit=1000)
-    all_symbols = [item["symbol"] for item in data["Items"]]
-
-    df = pdr.get_data_yahoo(" ".join(all_symbols), period="5d", interval="30m")
-
-    for symbol, close in df["Close"].iteritems():
-        rsi = RSIIndicator(close, n=14).rsi()
-
-        last = rsi.iloc[-1]
-        if last < 20:
-            action = "buy"
-        elif last > 80:
-            action = "sell"
-        else:
-            continue
-
-        # notify in discord with webhook
-        requests.post(DISCORD_WEBHOOK_URL, json={"content": f"time to {action} {symbol}", "tts": False})
+    return LambdaHandler.lambda_handler(event, context)
