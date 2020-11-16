@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Optional
 
+from numpy import ndarray
 from pandas import DataFrame, Series
 
 
@@ -116,13 +117,18 @@ class Strategy(ABC):
         return self.__class__.__name__
 
     @abstractmethod
-    def choose(self, rsi: int) -> Action:
+    def choose(self, *args, **kwargs) -> Action:
         raise NotImplementedError
 
     @abstractmethod
     def fit(self, df: DataFrame):
         self._data = df
         return self
+
+    def apply_choose(self, choose_args_df: DataFrame):
+        def raw_choose(raw_row_array: ndarray):
+            return self.choose(*raw_row_array)
+        self._actions = choose_args_df.apply(raw_choose, axis=1, raw=True)
 
     def action(self) -> Action:
         """returns last action"""

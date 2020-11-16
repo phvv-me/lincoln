@@ -12,8 +12,8 @@ variable "scheduled_tasks" {
     },
     {
       function: "app.handlers.evaluate.evaluation_handler",
-      description: "Fires every 4 hours between 8:00 - 20:30 BST from Monday to Friday",
-      expression: "cron(0 11-21/4 ? * MON-FRI *)"
+      description: "Fires every 4 hours between 8:05 - 20:35 BST from Monday to Friday",
+      expression: "cron(5 11-21/4 ? * MON-FRI *)"
     }
   ]
 }

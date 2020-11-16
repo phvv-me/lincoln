@@ -12,7 +12,7 @@ class RSI(Strategy):
     lb: int = 20  # lower bound
     ub: int = 80  # upper bound
 
-    def choose(self, rsi: int) -> Action:
+    def choose(self, rsi: float) -> Action:
         if rsi < self.lb:
             return Action.sell
         elif rsi > self.ub:
@@ -20,5 +20,7 @@ class RSI(Strategy):
         return Action.hold
 
     def fit(self, df: DataFrame):
-        self._actions = RSIIndicator(df["Close"], n=14).rsi().apply(self.choose)
+        args = RSIIndicator(df["Close"], n=self.n).rsi().to_frame()
+
+        super().apply_choose(args)
         return super().fit(df)
