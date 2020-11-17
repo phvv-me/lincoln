@@ -3,8 +3,8 @@ import requests
 import yfinance
 from decouple import config
 
-from app.handlers.utils import fetch_from_yahoo
-from app.tools import get_strategy
+from .utils import fetch_from_yahoo
+from ..tools import Strategy
 
 DISCORD_WEBHOOK_URL = config("DISCORD_WEBHOOK_URL")
 
@@ -22,7 +22,7 @@ def watch_handler(event, context):
         symbol = item["symbol"]
 
         chart = df[symbol]
-        strategy = get_strategy(name=item.get("strategy"))
+        strategy = Strategy.objects.get(name=item.get("strategy"))
 
         action = strategy().fit(chart).action()
         if action is not action.hold:

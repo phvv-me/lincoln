@@ -108,7 +108,7 @@ class Profit:
             self.close_short_position(price)
 
 
-class Strategy(ABC):
+class BaseStrategy(ABC):
     def __init__(self, *args, **kwargs):
         self._data: Optional[DataFrame] = None
         self._actions: Optional[Series] = None

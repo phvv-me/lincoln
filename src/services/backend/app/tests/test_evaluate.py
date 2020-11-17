@@ -1,4 +1,4 @@
-from app.handlers.evaluate import evaluation_handler
+from ..handlers.evaluate import evaluation_handler
 
 
 def test_evaluate():

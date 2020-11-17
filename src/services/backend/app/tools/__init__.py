@@ -1,1 +1,1 @@
-from .strategies import get_strategy
+from .strategies.models import Strategy

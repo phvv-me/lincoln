@@ -5,14 +5,14 @@ from pandas import DataFrame, concat
 from ta.momentum import RSIIndicator
 from ta.trend import EMAIndicator
 
-from ..base import Strategy, Action
+from ..base import BaseStrategy, Action
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 
 
 @dataclass
-class AdaptivePQ(Strategy):
+class AdaptivePQ(BaseStrategy):
     rsi_n: int = 14  # rsi window
     ema_n: int = 12  # rsi ema window
     lb: int = 20  # lower bound

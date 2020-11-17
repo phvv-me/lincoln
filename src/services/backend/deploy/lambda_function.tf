@@ -40,8 +40,8 @@ resource "aws_lambda_function" "service_lambda" {
   description = var.service.description
   role = aws_iam_role.lambda_role.arn
   handler = "main.handler"
-  memory_size = 256
-  timeout = 6
+  memory_size = 512
+  timeout = 25
   runtime = "python3.8"
 
   environment {

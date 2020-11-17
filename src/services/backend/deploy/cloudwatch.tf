@@ -6,14 +6,14 @@ variable "scheduled_tasks" {
   type = list(map(string))
   default = [
     {
-      function: "app.handlers.watch.watch_handler",
+      function: "handlers.watch.watch_handler",
       description: "Fires every 30 minutes between 8:00 - 20:30 BST from Monday to Friday",
-      expression: "cron(0/30 11-21 ? * MON-FRI *)"
+      expression: "cron(0/30 11-23 ? * MON-FRI *)"
     },
     {
-      function: "app.handlers.evaluate.evaluation_handler",
-      description: "Fires every 4 hours between 8:05 - 20:35 BST from Monday to Friday",
-      expression: "cron(5 11-21/4 ? * MON-FRI *)"
+      function: "handlers.evaluate.evaluation_handler",
+      description: "Fires every 4 hours between 8:05 - 20:05 BST from Monday to Friday",
+      expression: "cron(5 11-23/4 ? * MON-FRI *)"
     }
   ]
 }
@@ -41,6 +41,8 @@ resource "aws_cloudwatch_event_target" "lambda_schedule_target" {
 }
 
 resource "aws_lambda_permission" "allow_cloudwatch_to_call_function" {
+  count = length(var.scheduled_tasks)
+
   statement_id = "AllowExecutionFromCloudWatch-${count.index}"
   action = "lambda:InvokeFunction"
   principal = "events.amazonaws.com"

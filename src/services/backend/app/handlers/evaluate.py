@@ -3,10 +3,9 @@ import logging
 import boto3
 import yfinance
 from decouple import config
-from pandas_datareader import data as pdr
 
 from .utils import fetch_from_yahoo
-from ..tools.strategies.models import ALL_STRATEGIES
+from ..tools import Strategy
 
 DISCORD_WEBHOOK_URL = config("DISCORD_WEBHOOK_URL")
 
@@ -23,7 +22,7 @@ logger.setLevel(logging.INFO)
 
 def get_best_strategy(chart):
     best_strategy, best_profit = None, None
-    for strategy in ALL_STRATEGIES:
+    for strategy in Strategy.objects.all():
         st = strategy().fit(chart)
         stp = st.profit(operation_tax=4.9, short_allowed=False)
 

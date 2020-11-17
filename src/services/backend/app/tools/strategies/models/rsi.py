@@ -3,11 +3,11 @@ from dataclasses import dataclass
 from pandas import DataFrame
 from ta.momentum import RSIIndicator
 
-from ..base import Strategy, Action
+from ..base import BaseStrategy, Action
 
 
 @dataclass
-class RSI(Strategy):
+class RSI(BaseStrategy):
     n: int = 14  # window
     lb: int = 20  # lower bound
     ub: int = 80  # upper bound
