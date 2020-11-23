@@ -3,7 +3,7 @@ from dataclasses import dataclass
 from pandas import DataFrame
 from ta.momentum import RSIIndicator
 
-from ..base import BaseStrategy, Action
+from .abc import BaseStrategy, Action
 
 
 @dataclass
@@ -14,9 +14,9 @@ class RSI(BaseStrategy):
 
     def choose(self, rsi: float) -> Action:
         if rsi < self.lb:
-            return Action.sell
-        elif rsi > self.ub:
             return Action.buy
+        elif rsi > self.ub:
+            return Action.sell
         return Action.hold
 
     def fit(self, df: DataFrame):
