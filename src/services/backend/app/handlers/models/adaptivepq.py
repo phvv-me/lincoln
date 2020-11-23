@@ -5,7 +5,7 @@ from pandas import DataFrame, concat
 from ta.momentum import RSIIndicator
 from ta.trend import EMAIndicator
 
-from ..base import BaseStrategy, Action
+from .abc import BaseStrategy, Action
 
 logging.basicConfig()
 logger = logging.getLogger(__name__)

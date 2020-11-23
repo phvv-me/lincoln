@@ -2,7 +2,7 @@ from typing import Type, Optional
 
 from .adaptivepq import AdaptivePQ
 from .rsi import RSI
-from ..base import BaseStrategy
+from .abc import BaseStrategy
 
 ALL_STRATEGIES = [
     RSI,

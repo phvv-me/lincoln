@@ -49,7 +49,8 @@ data "aws_iam_policy_document" "lambda_execution_policy_document" {
   // DynamoDB Scan
   statement {
     actions = [
-      "dynamodb:Scan"
+      "dynamodb:Scan",
+      "dynamodb:PutItem"
     ]
     resources = [
       "arn:aws:dynamodb:*:*:*"]

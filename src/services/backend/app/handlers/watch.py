@@ -4,7 +4,7 @@ import yfinance
 from decouple import config
 
 from .utils import fetch_from_yahoo
-from ..tools import Strategy
+from .models import Strategy
 
 DISCORD_WEBHOOK_URL = config("DISCORD_WEBHOOK_URL")
 
