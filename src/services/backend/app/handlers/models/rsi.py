@@ -9,8 +9,8 @@ from .abc import BaseStrategy, Action
 @dataclass
 class RSI(BaseStrategy):
     n: int = 14  # window
-    lb: int = 20  # lower bound
-    ub: int = 80  # upper bound
+    lb: int = 15  # lower bound
+    ub: int = 85  # upper bound
 
     def choose(self, rsi: float) -> Action:
         if rsi < self.lb:

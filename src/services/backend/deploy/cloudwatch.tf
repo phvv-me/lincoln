@@ -7,13 +7,13 @@ variable "scheduled_tasks" {
   default = [
     {
       function: "handlers.watch.watch_handler",
-      description: "Fires every 30 minutes between 8:00 - 20:30 BST from Monday to Friday",
-      expression: "cron(0/30 11-23 ? * MON-FRI *)"
+      description: "Fires every 30 minutes between 9:00 - 17:30 BST from Monday to Friday",
+      expression: "cron(0/30 12-20 ? * MON-FRI *)"
     },
     {
       function: "handlers.evaluate.evaluation_handler",
-      description: "Fires every 4 hours between 8:05 - 20:05 BST from Monday to Friday",
-      expression: "cron(5 11-23/4 ? * MON-FRI *)"
+      description: "Fires every 4 hours between 8:05 - 16:35 BST from Monday to Friday",
+      expression: "cron(5 11-20/4 ? * MON-FRI *)"
     }
   ]
 }
