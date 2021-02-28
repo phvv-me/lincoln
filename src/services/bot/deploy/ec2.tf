@@ -10,7 +10,7 @@ data "aws_ami" "ami" {
 }
 
 resource "aws_instance" "discord_bot" {
-  ami           = data.aws_ami.ami.id
+  ami           = "ami-03d315ad33b9d49c4"
   instance_type = "t2.micro"
   user_data = <<EOF
 #!/usr/bin/bash
@@ -24,8 +24,10 @@ export AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY_ID}
 export AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_ACCESS_KEY}
 export AWS_DEFAULT_REGION=us-east-1
 
-python3 -m pip install -r lincoln/requirements.txt
-python3 lincoln/bot/main.py
+cd src/services/bot/
+
+python3 -m pip install -r requirements.txt
+python3 app/main.py
 EOF
 
   tags = merge(var.tags, {

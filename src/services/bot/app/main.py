@@ -8,10 +8,13 @@ bot = commands.Bot(command_prefix="!")
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('bot')
 
+# TODO: add logger
+
 
 @bot.event
 async def on_ready():
     print(f"{bot.user} has connected to Discord!")
+    # ctx.send(f"{bot.user} has connected to Discord!")
 
 
 @bot.command(name="watch", brief="add symbol to table")
@@ -47,10 +50,6 @@ async def show_all_watch_entries(ctx):
         embed.add_field(name=str(i), value=item["symbol"])
 
     await ctx.send(embed=embed)
-
-
-
-
 
 if __name__ == '__main__':
     TOKEN = config("DISCORD_TOKEN")

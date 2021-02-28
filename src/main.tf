@@ -19,15 +19,14 @@ provider "aws" {
   # looks for credentials in ~/.aws/credentials
   profile = "default"
   # N. Virginia
-  region = "us-east-1"
-  version = "~> 3.6.0"
+  region  = "us-east-1"
 }
 
 module "bot" {
   source = "./services/bot/deploy"
 
-  DISCORD_TOKEN = var.DISCORD_TOKEN
-  AWS_ACCESS_KEY_ID = var.AWS_ACCESS_KEY_ID
+  DISCORD_TOKEN         = var.DISCORD_TOKEN
+  AWS_ACCESS_KEY_ID     = var.AWS_ACCESS_KEY_ID
   AWS_SECRET_ACCESS_KEY = var.AWS_SECRET_ACCESS_KEY
 
   tags = var.tags

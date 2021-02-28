@@ -135,3 +135,5 @@ dmypy.json
 # extra
 lambda_layer
 lambda_layer/
+
+.idea/
