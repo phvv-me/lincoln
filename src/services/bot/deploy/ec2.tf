@@ -24,10 +24,10 @@ export AWS_ACCESS_KEY_ID=${var.AWS_ACCESS_KEY_ID}
 export AWS_SECRET_ACCESS_KEY=${var.AWS_SECRET_ACCESS_KEY}
 export AWS_DEFAULT_REGION=us-east-1
 
-cd src/services/bot/
+cd lincoln/src/services/
 
-python3 -m pip install -r requirements.txt
-python3 app/main.py
+python3 -m pip install -r bot/requirements.txt
+python3 run_bot.py
 EOF
 
   tags = merge(var.tags, {

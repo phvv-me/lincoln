@@ -1,12 +1,11 @@
-import boto3
 import discord
-from decouple import config
 from discord.ext import commands
+
+from common.tables import Table
 
 bot = commands.Bot(command_prefix="!")
 
-dynamodb = boto3.resource('dynamodb')
-table = dynamodb.Table('bot')
+table = Table('watchlist')
 
 # TODO: add logger
 
@@ -19,38 +18,34 @@ async def on_ready():
 
 @bot.command(name="watch", brief="add symbol to table")
 async def add_watch_entry(ctx, symbol):
-    response = table.put_item(
-        Item={"symbol": symbol}
-    )
+    response = table.put(symbol=symbol)
 
-    if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+    if response.is_successful:
         await ctx.send(f"I am watching {symbol}!")
     else:
-        await ctx.send(response)
+        await ctx.send("[ERROR] Unable to add symbol to watchlist")
 
 
 @bot.command(name="unwatch", brief="remove symbol from table")
 async def remove_watch_entry(ctx, symbol):
-    response = table.delete_item(
-        Item={"symbol": symbol}
-    )
+    response = table.delete(symbol=symbol)
 
-    if response['ResponseMetadata']['HTTPStatusCode'] == 200:
+    if response.is_successful:
         await ctx.send(f"I am not watching {symbol} anymore.")
     else:
-        await ctx.send(response)
+        await ctx.send("[ERROR] Unable to remove symbol from watchlist")
 
 
 @bot.command(name="watching", brief="show all symbols under watch")
 async def show_all_watch_entries(ctx):
-    response = table.scan(Limit=1000)
+    response = table.scan()
 
-    embed = discord.Embed(title="watching table").add_field(name="id", value="symbol")
-    for i, item in enumerate(response["Items"]):
-        embed.add_field(name=str(i), value=item["symbol"])
+    if response.is_successful:
+        embed = discord.Embed(title="watching table").add_field(name="id", value="symbol")
+        for i, item in enumerate(response.data):
+            embed.add_field(name=str(i), value=item["symbol"])
+        await ctx.send(embed=embed)
+    else:
+        await ctx.send("No items found in watchlist table")
 
-    await ctx.send(embed=embed)
 
-if __name__ == '__main__':
-    TOKEN = config("DISCORD_TOKEN")
-    bot.run(TOKEN)

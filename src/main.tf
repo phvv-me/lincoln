@@ -42,4 +42,8 @@ module "backend" {
   tags = var.tags
 }
 
+module "common" {
+  source = "./services/common/deploy"
 
+  tags = var.tags
+}

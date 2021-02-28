@@ -1,5 +1,7 @@
+// tables
+
 resource "aws_dynamodb_table" "input_dynamodb_table" {
-  name             = "bot"
+  name             = "watchlist"
   billing_mode     = "PROVISIONED"
   stream_view_type = "KEYS_ONLY"
   stream_enabled   = true
